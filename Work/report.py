@@ -2,7 +2,7 @@
 #
 # Exercise 2.4
 
-import csv
+import fileparse
 
 
 def read_portfolio(filename):
@@ -18,12 +18,10 @@ def read_portfolio(filename):
 
 
 def read_prices(filename):
+    prices1 = fileparse.parse_csv("Data/prices.csv", types=[str, float], has_headers=False)
     prices = {}
-    with open(filename, 'rt') as f:
-        rows = csv.reader(f)
-        for row in rows:
-            if len(row) > 1:
-                prices[row[0]] = float(row[1])
+    for p in prices1:
+        prices[p[0]] = float(p[1])
 
     return prices
 
@@ -44,7 +42,7 @@ def print_table(table):
         print('{name:<10s} {shares:^10d} {price:^10.2f} {gain:^10.2f}'.format_map(row))
 
 
-Portfolio = read_portfolio("Data/portfolio.csv")
+Portfolio = fileparse.parse_csv("Data/portfolio.csv", types=[str, int, float], has_headers=True)
 Prices = read_prices("Data/prices.csv")
 calculate_gains(Portfolio, Prices)
 
